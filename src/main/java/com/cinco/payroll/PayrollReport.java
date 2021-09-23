@@ -26,20 +26,21 @@ public class PayrollReport {
 					String lastName = nameTokens[0];
 					String firstName = nameTokens[1];
 					String title = tokens[3];
-					double annualSalary = 0.0, hourlyPayRate = 0.0, hoursWorked = 0.0;
+					int annualSalary = 0;
+					double hourlyPayRate = 0.0, hoursWorked = 0;
 					if(tokens.length == 6) {
 						hourlyPayRate = Double.parseDouble(tokens[4]);
 						hoursWorked = Double.parseDouble(tokens[5]);
 					} else if(tokens.length == 5) {
-						annualSalary = Double.parseDouble(tokens[4]);
+						annualSalary = Integer.parseInt(tokens[4]);
 					}
 					
 					if(tokens[0].equals("E")) {
-						e = new Employee(); //TODO: modify this
+						e = new SalaryEmployee(id,firstName,lastName,title,annualSalary);
 					} else if(tokens[0].equals("S")) {
-						e = new Employee(); //TODO: modify this
+						e = new Staff(id,firstName,lastName,title,hourlyPayRate,hoursWorked);
 					} else if(tokens[0].equals("T")) {
-						e = new Employee(); //TODO: modify this
+						e = new Temporary(id,firstName,lastName,title,hourlyPayRate,hoursWorked);
 					}
 					
 					result.add(e);
@@ -66,7 +67,7 @@ public class PayrollReport {
 		for(Employee e : payroll) {
 			//format their information
 			sb.append(String.format("%-8s %-20s %-10s %-30s $%8.2f $%8.2f $%8.2f\n", 
-					"TODO", "TODO", "TODO", "TODO", 0.0, 0.0, 0.0)); //TODO: replace these
+					e.getID(),e.getFirst()+" "+e.getLast(),e.getType(),e.getTitle(),e.getGrossPay(),e.getTaxes(),e.getNetPay()));
 		}
 		
 		System.out.println(sb);
